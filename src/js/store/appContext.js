@@ -33,7 +33,6 @@ const injectContext = PassedComponent => {
 			 *
 			 **/
 			state.actions.getUsers();
-			// 26 23.00
 			state.actions.getContacts();
 		}, []);
 

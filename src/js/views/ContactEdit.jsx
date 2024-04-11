@@ -12,7 +12,7 @@ export const ContactEdit = () => {
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
 
-     // Load the contact data when the component mounts
+    // Load the contact data when the component mounts
     useEffect(() => {
         if (store.currentUser) {
             setName(store.currentUser.full_name);
@@ -28,7 +28,7 @@ export const ContactEdit = () => {
     const handleOnSubmit = (event) => {
         event.preventDefault();
         const updatedContact = {
-            full_name: name,
+            slug: name,
             email: email,
             agenda_slug: store.agenda,
             address: address,
@@ -42,41 +42,41 @@ export const ContactEdit = () => {
 
     return (
         <div className="container">
-        <h1 className="text-center">Edit Contact</h1>
-        <form onSubmit={handleOnSubmit}>
-            <div className="mb-3">
-                <label htmlFor="exampleInputFullName" className="form-label">
-                    Full Name <span className="text-warning">*</span>
-                </label>
-                <input type="text" className="form-control" id="exampleInputFullName" aria-describedby="emailHelp"
-                    value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="exampleInputEmail" className="form-label">
-                    Email address <span className="text-warning">*</span>
-                </label>
-                <input type="email" className="form-control" id="exampleInputEmail" aria-describedby="emailHelp"
-                    value={email} onChange={(e) => setEmail(e.target.value)} />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="exampleInputPhone" className="form-label">
-                    Phone <span className="text-warning">*</span>
-                </label>
-                <input type="text" className="form-control" id="exampleInputPhone"
-                    value={phone} onChange={(e) => setPhone(e.target.value)} />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="exampleInputAddress" className="form-label">
-                    Address <span className="text-warning">*</span>
-                </label>
-                <input type="text" className="form-control" id="exampleInputAddress"
-                    value={address} onChange={(e) => setAddress(e.target.value)} />
-            </div>
-            <div className="d-flex justify-content-end">
+            <h1 className="text-center">Edit Contact</h1>
+            <form onSubmit={handleOnSubmit}>
+                <div className="mb-3">
+                    <label htmlFor="exampleInputFullName" className="form-label">
+                        Full Name <span className="text-warning">*</span>
+                    </label>
+                    <input type="text" className="form-control" id="exampleInputFullName" aria-describedby="emailHelp"
+                        value={name} onChange={(e) => setName(e.target.value)} />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="exampleInputEmail" className="form-label">
+                        Email address <span className="text-warning">*</span>
+                    </label>
+                    <input type="email" className="form-control" id="exampleInputEmail" aria-describedby="emailHelp"
+                        value={email} onChange={(e) => setEmail(e.target.value)} />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="exampleInputPhone" className="form-label">
+                        Phone <span className="text-warning">*</span>
+                    </label>
+                    <input type="text" className="form-control" id="exampleInputPhone"
+                        value={phone} onChange={(e) => setPhone(e.target.value)} />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="exampleInputAddress" className="form-label">
+                        Address <span className="text-warning">*</span>
+                    </label>
+                    <input type="text" className="form-control" id="exampleInputAddress"
+                        value={address} onChange={(e) => setAddress(e.target.value)} />
+                </div>
+                <div className="d-flex justify-content-end">
                     <button type="submit" className="btn btn-primary me-3">Update</button>
                     <button onClick={() => navigate('/contact-list')} type="button" className="btn btn-secondary">Cancel</button>
-            </div>
-        </form>
-    </div>
+                </div>
+            </form>
+        </div>
     )
 }

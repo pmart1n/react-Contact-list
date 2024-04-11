@@ -1,5 +1,5 @@
 
-import React  from "react";
+import React from "react";
 import { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router";
@@ -17,14 +17,13 @@ export const CreateContact = () => {
     const handleOnSubmit = (event) => {
         event.preventDefault();
         const contact = {
-            full_name: name,
+            slug: name,
             email: email,
-            agenda_slug: store.agenda,
             address: address,
             phone: phone
         }
         actions.addContact(contact);
-        navigate("/contact-list")
+        navigate("/contact-list");
     }
     return (
         <div className="container">

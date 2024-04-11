@@ -20,7 +20,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			mensaje: "Home",
 			isLogin: false,
 			agenda: "ptt_agenda",
-			contacts: null
+			contacts: []
 		},
 		actions: {
 			login: () => {
@@ -52,40 +52,50 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({users:data})
 				localStorage.setItem("usuarios", JSON.stringify(data))
 			},
-			addContact : async (dataToSend) => {
+			addContact: async (dataToSend) => {
+				// Extraer slug de dataToSend si es necesario
+				const { slug } = dataToSend;
 				const options = {
 					method: 'POST',
 					body: JSON.stringify(dataToSend),
-					headers: {'Content-type': 'application/json' }
+					headers: {'Content-Type': 'application/json'}
+				};
+				const response = await fetch(`https://playground.4geeks.com/contact/agendas/${slug}`, options);
+				if (!response.ok) {
+					// Manejar adecuadamente una respuesta no exitosa
+					console.error("Error al añadir la agenda", await response.text());
+					return;
 				}
-				
-				const response = await fetch("https://playground.4geeks.com/apis/fake/contact/", options)
-				if (!response.ok) return
-				const data = await response.json();
+				// Si la respuesta es exitosa, actualizamos los contactos.
 				getActions().getContacts();
 			},
 			getContacts : async () => {
-				const response = await fetch("https://playground.4geeks.com/apis/fake/contact/agenda/" + getStore().agenda)
+				const response = await fetch("https://playground.4geeks.com/contact/agendas/")
 				if (!response.ok) return
 				const data = await response.json();
-				setStore({contacts: data })
+				setStore({ contacts: data })
 				localStorage.setItem("contactList", JSON.stringify(data))
 			},
-			deleteContact: async (contact_id) => {
-				const response = await fetch(
-				  `https://playground.4geeks.com/apis/fake/contact/${contact_id}`,
-				  {
-					method: 'DELETE',
-				  }
-				);
-			
-				if (response.ok) {
-				  getActions().getContacts(); 
-				} else {
-				  console.error("There was an error deleting the contact.");
+			deleteContact: async (slug) => {
+				try {
+					const response = await fetch(`https://playground.4geeks.com/contact/agendas/${slug}`, {
+						method: 'DELETE',
+					});
+					if (response.ok) {
+						// Obtén el estado actual
+						const store = getStore();
+						// Filtra el contacto eliminado basándote en el slug
+						const updatedAgendas = store.contacts.agendas.filter(agenda => agenda.slug !== slug);
+						// Actualiza el estado con los contactos filtrados
+						setStore({ contacts: { ...store.contacts, agendas: updatedAgendas } });
+					} else {
+						console.error("Error deleting the contact");
+					}
+				} catch (error) {
+					console.error("There was an error deleting the contact:", error);
 				}
-			  },
-			  editContact: async (contact_id, updatedData) => {
+			},
+			  editContact: async (slug, updatedData, id) => {
 				const options = {
 				  method: 'PUT',
 				  body: JSON.stringify(updatedData),
@@ -95,7 +105,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 			  
 				try {
-				  const response = await fetch(`https://playground.4geeks.com/apis/fake/contact/${contact_id}`, options);
+				  const response = await fetch(`https://playground.4geeks.com/agendas/${slug}/contacts/${id}`, options);
 			  
 				  if (!response.ok) {
 					throw new Error('Failed to update contact');
