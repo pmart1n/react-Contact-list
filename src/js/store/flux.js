@@ -29,13 +29,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			logout: () => {setStore({isLogin: false})},
 			assignUser: (item) => { setStore({ currentUser: item }) },
-			//25.3 17.20
 			clearUser: () => { setStore({ currentUser: null }) },
-			//25.3 31.11
 			addFavorites: (newFavorite) => {
 				setStore({ favorites: [...getStore().favorites,newFavorite]})
 			},
-			//25.3 41.11 , 44.44
 			removeFavorites: (item, array) => {
 				setStore({ favorites: array.filter((element) => element != item) })
 			},
@@ -55,7 +52,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({users:data})
 				localStorage.setItem("usuarios", JSON.stringify(data))
 			},
-			//26 8.50
 			addContact : async (dataToSend) => {
 				const options = {
 					method: 'POST',
@@ -66,10 +62,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const response = await fetch("https://playground.4geeks.com/apis/fake/contact/", options)
 				if (!response.ok) return
 				const data = await response.json();
-				//26 57.15 
 				getActions().getContacts();
 			},
-			//26 20.44
 			getContacts : async () => {
 				const response = await fetch("https://playground.4geeks.com/apis/fake/contact/agenda/" + getStore().agenda)
 				if (!response.ok) return
@@ -86,7 +80,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				);
 			
 				if (response.ok) {
-				  getActions().getContacts(); // Refresh the contact list after deletion
+				  getActions().getContacts(); 
 				} else {
 				  console.error("There was an error deleting the contact.");
 				}
